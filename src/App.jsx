@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { getCharacters } from "./redux/charAction";
+import { validation } from "./validation";
 
 function App() {
 const dispatch = useDispatch();
@@ -13,14 +14,13 @@ useEffect(() => {
 }, [dispatch])
 
   function search(id) {
-    if (isNaN(id)) {
-      return alert('debe ingresar un numero')
-    }
-    const repetido = personaje.find(char => char.id === Number(id)) !== undefined
-    if (repetido) return alert('Ese personaje ya esta en la lista')
-    const char = characters.find(char => char.id === Number(id))
+    const char = validation(id, characters, personaje)
+    if(char) {
     setPersonaje([...personaje, char])
+  } else {
+    return personaje
   }
+}  
 
   function searchInput(e) {
     e.preventDefault()
